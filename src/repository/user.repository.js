@@ -1,4 +1,4 @@
-const pool = require("../DB");
+const pool = require('../DB');
 
 async function getAllUsersDB() {
   const client = await pool.connect();
@@ -39,16 +39,15 @@ async function patchDataDB(id, clientObj) {
 
   const sqlUpdate = `update users set name=$1, surname=$2, email=$3, pwd=$4
      where id=$5 returning *`;
-  const result = (
-    await client.query(sqlUpdate, [
-      newObj.name,
-      newObj.surname,
-      newObj.email,
-      newObj.pwd,
-      id,
-    ])
-  ).rows;
-return result;
+  const result = (await client.query(sqlUpdate, [newObj.name, newObj.surname, newObj.email, newObj.pwd, id])).rows;
+  return result;
+}
+
+async function deleteDataDB(id) {
+  const client = await pool.connect();
+  const sql = `delete from users where id=$1 returning *`;
+  const result = (await client.query(sql, [id])).rows;
+  return result;
 }
 
 module.exports = {
@@ -57,4 +56,5 @@ module.exports = {
   getDataByIdDB,
   updateDataDB,
   patchDataDB,
+  deleteDataDB,
 };
