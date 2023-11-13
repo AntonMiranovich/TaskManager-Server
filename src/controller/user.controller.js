@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllUsers, createData, getDataById, updateData,deleteData, patchData } = require('../service/user.service');
+const { getAllUsers, createData, getDataById, updateData, deleteData, patchData } = require('../service/user.service');
 const buildResponse = require('../helper/builResponse');
 
 const route = express.Router();
@@ -55,10 +55,10 @@ route.patch('/:id', async (req, res) => {
   }
 });
 
-route.delete('/:id',async (req, res) => {
+route.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const data =await deleteData(id);
+    const data = await deleteData(id);
     buildResponse(res, 200, data);
   } catch (error) {
     buildResponse(res, 404, error.message);
