@@ -1,4 +1,11 @@
-const { getAllDataDB, createDataDB, deleteDataTaskDB, patchDataTaskDB } = require('../repository/task.repository');
+const {
+  getAllDataDB,
+  createDataDB,
+  deleteDataTaskDB,
+  patchDataTaskDB,
+  updateTaskByIdDB,
+  getDataTaskByIdDB,
+} = require('../repository/task.repository');
 const ExceptionType = require('../exception/exception');
 
 async function getAllData() {
@@ -7,9 +14,21 @@ async function getAllData() {
   return data;
 }
 
+async function getDataTaskById(id) {
+  const data = await getDataTaskByIdDB(id);
+  if (!data.length) throw new Error(ExceptionType.DB_GET_TASK_BY_ID_NOT_FOUND);
+  return data;
+}
+
 async function createData(task, user_id) {
   const data = await createDataDB(task, user_id);
   if (!data.length) throw new Error(ExceptionType.DB_POST_TASK_NOT_CREATE);
+  return data;
+}
+
+async function updateTaskById(id, task, user_id) {
+  const data = await updateTaskByIdDB(id, task, user_id);
+  if (!data.length) throw new Error(ExceptionType.DB_PUT_TASK_NOT_UPDATE);
   return data;
 }
 
@@ -25,4 +44,4 @@ async function patchDataTask(id, clientObj) {
   return data;
 }
 
-module.exports = { getAllData, createData, deleteDataTask, patchDataTask };
+module.exports = { getAllData, createData, deleteDataTask, patchDataTask, getDataTaskById, updateTaskById };
