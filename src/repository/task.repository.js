@@ -9,7 +9,7 @@ async function getAllDataDB() {
 
 async function getDataTaskByIdDB(id) {
   const client = await pool.connect();
-  const sql = `select * from task where id=$1`;
+  const sql = `select * from tasks where id=$1`;
   const result = (await client.query(sql, [id])).rows;
   return result;
 }
