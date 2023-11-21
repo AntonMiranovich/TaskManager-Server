@@ -14,7 +14,7 @@ route.get('/', async (req, res) => {
   }
 });
 
-route.get('/:id',isValidId, async (req, res) => {
+route.get('/:id', isValidId, async (req, res) => {
   try {
     const { id } = req.params;
     const data = await getDataTaskById(id);
@@ -34,7 +34,7 @@ route.post('/', isValidTaskBody, async (req, res) => {
   }
 });
 
-route.put('/:id',isValidTaskBody,isValidId, async (req, res) => {
+route.put('/:id', isValidTaskBody, isValidId, async (req, res) => {
   try {
     const { id } = req.params;
     const { task, user_id } = req.body;

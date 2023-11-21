@@ -67,8 +67,8 @@ async function patchDataTaskDB(id, clientObj) {
     const sql1 = `select * from tasks where id=$1`;
     const oldObj = (await client.query(sql1, [id])).rows;
     const newObj = { ...oldObj[0], ...clientObj };
-    const sql2 = `update tasks set task=$1,user_id=$2 where id=$3 returning *`;
-    const result = (await client.query(sql2, [newObj.task, newObj.user_id, id])).rows;
+    const sqlPutTask = `update tasks set task=$1,user_id=$2 where id=$3 returning *`;
+    const result = (await client.query(sqlPutTask, [newObj.task, newObj.user_id, id])).rows;
     await client.query('COMMIT');
     return result;
   } catch (error) {

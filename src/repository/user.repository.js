@@ -46,25 +46,6 @@ async function updateDataDB(id, name, surname, email, pwd) {
   }
 }
 
-async function patchDataDB(id, clientObj) {
-  const client = await pool.connect();
-  try {
-    await client.query('BEGEN');
-    const sql = `select * from users where id=$1`;
-    const oldObj = (await client.query(sql, [id])).rows;
-    const newObj = { ...oldObj[0], ...clientObj };
-    const sqlUpdate = `update users set name=$1, surname=$2, email=$3, pwd=$4
-       where id=$5 returning *`;
-    const result = (await client.query(sqlUpdate, [newObj.name, newObj.surname, newObj.email, newObj.pwd, id])).rows;
-    await client.query('COMMIT');
-    return result;
-  } catch (error) {
-    await client.query('ROLLBACK');
-    console.log(`patchDataDB:${error.message}`);
-    return [];
-  }
-}
-
 async function deleteDataDB(id) {
   const client = await pool.connect();
   try {
@@ -80,11 +61,30 @@ async function deleteDataDB(id) {
   }
 }
 
+async function patchDataUserDB(id, clientObj) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const sql = `select * from users where id=$1`;
+    const oldObj = (await client.query(sql, [id])).rows;
+    const newObj = { ...oldObj[0], ...clientObj };
+    const slqPutUser = `update users set name=$1, surname=$2, email=$3, pwd=$4
+    where id=$5 returning *`;
+    const result = (await client.query(slqPutUser, [newObj.name, newObj.surname, newObj.email, newObj.pwd, id])).rows;
+    await client.query('COMMIT');
+    return result;
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.log(`deleteDataDB:${error.message}`);
+    return [];
+  }
+}
+
 module.exports = {
   getAllUsersDB,
   createDataDB,
   getDataByIdDB,
   updateDataDB,
-  patchDataDB,
   deleteDataDB,
+  patchDataUserDB,
 };

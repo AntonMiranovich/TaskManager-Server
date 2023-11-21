@@ -1,4 +1,4 @@
-const { getAllUsersDB, createDataDB, getDataByIdDB, deleteDataDB, updateDataDB, patchDataDB } = require('../repository/user.repository');
+const { getAllUsersDB, createDataDB, getDataByIdDB, deleteDataDB, updateDataDB, patchDataUserDB } = require('../repository/user.repository');
 const ExceptionType = require('../exception/exception');
 
 async function getAllUsers() {
@@ -25,15 +25,15 @@ async function updateData(id, name, surname, email, pwd) {
   return data;
 }
 
-async function patchData(id, clientObj) {
-  const data = await patchDataDB(id, clientObj);
-  if (!data.length) throw new Error(ExceptionType.DB_PATCH_USER_NOT_PATCH);
-  return data;
-}
-
 async function deleteData(id) {
   const data = await deleteDataDB(id);
   if (!data.length) throw new Error(ExceptionType.DB_DELETE_USER_NOT_DELETE);
+  return data;
+}
+
+async function patchDataUser(id, clientObj) {
+  const data = await patchDataUserDB(id, clientObj);
+  if (!data.length) throw new Error(ExceptionType.DB_PATCH_USER_NOT_PATCH);
   return data;
 }
 
@@ -42,6 +42,6 @@ module.exports = {
   createData,
   getDataById,
   updateData,
-  patchData,
+  patchDataUser,
   deleteData,
 };
