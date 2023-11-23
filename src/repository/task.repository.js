@@ -17,7 +17,7 @@ async function getDataTaskByIdDB(id) {
 async function createDataDB(task, user_id) {
   const client = await pool.connect();
   try {
-    await client.query('BEGEN');
+    await client.query('BEGIN');
     const sql = `insert into tasks (task , user_id)
   values ($1,$2) returning *`;
     const data = (await client.query(sql, [task, user_id])).rows;
@@ -33,7 +33,7 @@ async function createDataDB(task, user_id) {
 async function updateTaskByIdDB(id, task, user_id) {
   const client = await pool.connect();
   try {
-    await client.query('BEGEN');
+    await client.query('BEGIN');
     const sql = `update tasks set task=$1,user_id=$2 where id=$3 returning *`;
     const result = (await client.query(sql, [task, user_id, id])).rows;
     await client.query('COMMIT');
@@ -48,7 +48,7 @@ async function updateTaskByIdDB(id, task, user_id) {
 async function deleteDataTaskDB(id) {
   const client = await pool.connect();
   try {
-    await client.query('BEGEN');
+    await client.query('BEGIN');
     const sql = `delete from tasks where id=$1 returning *`;
     const data = (await client.query(sql, [id])).rows;
     await client.query('COMMIT');
@@ -63,7 +63,7 @@ async function deleteDataTaskDB(id) {
 async function patchDataTaskDB(id, clientObj) {
   const client = await pool.connect();
   try {
-    await client.query('BEGEN');
+    await client.query('BEGIN');
     const sql1 = `select * from tasks where id=$1`;
     const oldObj = (await client.query(sql1, [id])).rows;
     const newObj = { ...oldObj[0], ...clientObj };
