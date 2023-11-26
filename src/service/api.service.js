@@ -6,7 +6,7 @@ const salt = 10;
 
 async function createUser(name, surname, email, pwd) {
   const user = await getUserByEmail(email);
-  if (user.length) throw new Error('User has already exist');
+  if (user.length) throw new Error(ExceptionType.API_TITLE_EMPTY);
 
   const hashPwd = await bcrypt.hash(pwd, salt);
   const data = await createUserDb(name, surname, email, hashPwd);
@@ -16,7 +16,7 @@ async function createUser(name, surname, email, pwd) {
 
 async function authUser(email, pwd) {
   const user = await getUserByEmail(email);
-  if (!user.length) throw new Error('Email not found');
+  if (!user.length) throw new Error(ExceptionType.API_EMAIL_NOT_CREATE);
 
   const pwdUserHash=user[0].pwd
   if(!(await bcrypt.compare(pwd,pwdUserHash)))throw new Error('Password does not match')

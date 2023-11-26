@@ -24,6 +24,9 @@ const ExceptionType = {
   DB_PUT_USER_NOT_UPDATE: 'user does not update',
   DB_DELETE_USER_NOT_DELETE: 'user does not delete',
   DB_PATCH_USER_NOT_PATCH: 'user does not patch',
+
+  API_TITLE_EMPTY:'no data',
+  API_EMAIL_NOT_CREATE:'email does not create'
 };
 
 module.exports = ExceptionType;
